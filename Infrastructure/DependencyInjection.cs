@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Infrastructure.Data;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,6 +18,25 @@ namespace Infrastructure
         this IServiceCollection services,
         IConfiguration configuration)
         {
+
+            //Database 
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(configuration.GetConnectionString("DbConnection"));
+            });
+
+            //Identiy
+            services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+            {
+                option.Password.RequiredLength = 6;
+                option.Password.RequireDigit = true;
+                option.Password.RequireUppercase = true;
+                option.Password.GetHashCode();
+
+            })
+             .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
             return services;
         }
     }
