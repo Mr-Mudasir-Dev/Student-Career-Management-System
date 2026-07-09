@@ -9,6 +9,10 @@ namespace Infrastructure.Identity
 {
     public class ApplicationUser : IdentityUser
     {
+        public int Age { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

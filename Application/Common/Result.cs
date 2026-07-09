@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Common
+{
+    public class Result
+    {
+        public bool IsSuccess { get; }
+        public string? Message { get; }
+        public List<string> Errors { get; }
+
+        protected Result(bool issuccess, string? message, List<string>? errors = null)
+        {
+            IsSuccess = issuccess;
+            Message = message;
+            Errors = errors ?? new List<string>();
+        }
+
+        public static Result Success(string? msg = null)
+        {
+            return new Result(true, msg);
+        }
+        public static Result Failure(string msg)
+        {
+            return new Result(false, msg);
+        }
+
+        public static Result Failure(List<string> errors)
+        {
+            return new Result(false, "Registration failed", errors);
+        }
+    }
+}

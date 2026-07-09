@@ -1,4 +1,6 @@
 ﻿using Application.Interface;
+using Application.Interface.Repository;
+using Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,26 @@ namespace Infrastructure.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public void Dispose()
+        public IIdentityRepository IdentityRepository { get; }
+        public IUserRepository UserRepository { get; }
+        
+
+        private readonly AppDbContext _context;
+        public UnitOfWork(
+            AppDbContext context,
+            IIdentityRepository identityRepository,
+            IUserRepository userRepository)
         {
-            throw new NotImplementedException();
+            _context = context;
+            IdentityRepository = identityRepository;
+            UserRepository = userRepository;
         }
 
-        public Task<int> SaveChangesAsync()
+        
+
+        public async Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+           return await _context.SaveChangesAsync();
         }
     }
 }
