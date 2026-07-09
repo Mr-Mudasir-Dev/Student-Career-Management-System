@@ -9,13 +9,13 @@ namespace Application.Interface.Repository
     public interface IGenericRepository<T> where T : class
     {
         // Read
-        Task<T> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
 
         // Write
         Task AddAsync (T entity);
-        Task UpdateAsync (T entity);
-        Task DeleteAsync (T entity);
+        void UpdateAsync (T entity);
+        void DeleteAsync (T entity);
 
         // Check
         Task<bool> ExistsAsync (int id);

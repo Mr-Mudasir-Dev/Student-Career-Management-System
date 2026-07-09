@@ -1,4 +1,6 @@
 ﻿using Application.Interface.Repository;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +11,43 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        public Task AddAsync(T entity)
+        private readonly AppDbContext _context;
+        private readonly DbSet<T> _dbSet;
+        public GenericRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _dbSet = context.Set<T>();
         }
 
-        public Task DeleteAsync(T entity)
+
+        public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
         }
 
-        public Task<bool> ExistsAsync(int id)
+        public void DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(entity);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<bool> ExistsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id) != null;
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id);
+        }
+
+        public void UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
         }
     }
 }

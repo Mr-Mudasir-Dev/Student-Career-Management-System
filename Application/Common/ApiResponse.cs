@@ -14,12 +14,12 @@ namespace Application.Common
         public List<string> Errors { get; set; } = new();
 
         //200 - Success with data
-        public static ApiResponse<T> SuccessResponse(T data, string message = "Success")
+        public static ApiResponse<T> SuccessResponse(T data, string? message = "Success")
         {
             return new ApiResponse<T>
             {
                 Success = true,
-                Message = message,
+                Message = message ?? "Success",
                 Data = data,
                 Errors = new List<string>()
             };
