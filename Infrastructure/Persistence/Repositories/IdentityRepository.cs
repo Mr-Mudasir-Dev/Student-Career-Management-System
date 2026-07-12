@@ -37,5 +37,6 @@ namespace Infrastructure.Persistence.Repositories
             var errors = result.Errors.Select(e => e.Description).ToList();
             return IdentityOperationResult.Failure(errors);
         }
+
     }
 }

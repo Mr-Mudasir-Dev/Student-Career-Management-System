@@ -52,6 +52,7 @@ namespace Infrastructure
             // Repository Register
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFeedbackRepository,  FeedbackRepository>();
 
             return services;
         }

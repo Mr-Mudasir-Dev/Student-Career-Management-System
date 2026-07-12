@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.Features.Authentication.Register;
+using Application.Features.Authentication.Cammand.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

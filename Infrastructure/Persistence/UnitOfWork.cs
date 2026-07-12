@@ -13,17 +13,22 @@ namespace Infrastructure.Persistence
     {
         public IIdentityRepository IdentityRepository { get; }
         public IUserRepository UserRepository { get; }
-        
+        public IFeedbackRepository FeedbackRepository { get; }
+
+
 
         private readonly AppDbContext _context;
+
         public UnitOfWork(
             AppDbContext context,
             IIdentityRepository identityRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IFeedbackRepository feedbackRepository)
         {
             _context = context;
             IdentityRepository = identityRepository;
             UserRepository = userRepository;
+            FeedbackRepository = feedbackRepository;
         }
 
         
