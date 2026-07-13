@@ -12,8 +12,8 @@ namespace Application.Interface.Repository
     {
         // basic mathod genric-Repo de raha h
 
-        Task<IEnumerable<Feedback>> GetByUseridAsync(string id);
-        Task<IEnumerable<Feedback>> GetByStatusAsync(FeedbackStatus status);
-        Task<IEnumerable<Feedback>> GetByCategoryAync(FeedbackCategory category);
+        Task<IEnumerable<Feedback>> GetByUseridAsync(string id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Feedback>> GetByStatusAsync(FeedbackStatus status, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Feedback>> GetByCategoryAync(FeedbackCategory category, CancellationToken cancellationToken = default);
     }
 }

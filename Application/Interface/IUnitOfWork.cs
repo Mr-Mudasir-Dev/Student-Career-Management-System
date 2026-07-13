@@ -9,7 +9,7 @@ namespace Application.Interface
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
 
         IIdentityRepository IdentityRepository { get; }

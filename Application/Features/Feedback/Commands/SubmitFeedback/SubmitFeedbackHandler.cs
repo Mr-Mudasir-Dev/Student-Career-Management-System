@@ -27,13 +27,12 @@ namespace Application.Features.Feedback.Commands.SubmitFeedback
                 Message = request.Message,
                 Rating = request.Rating,
                 IsAnonymous = request.IsAnonymous,
-                CreatedAt = DateTime.UtcNow
             };
 
-            await _uow.FeedbackRepository.AddAsync(feedback);
-            await _uow.SaveChangesAsync();
+            await _uow.FeedbackRepository.AddAsync(feedback, cancellationToken);
+            await _uow.SaveChangesAsync(cancellationToken);
 
-            return Result.Success("Feedback Add Successfully");
+            return Result.Success("Feedback Submitted Successfully");
         }
     }
 }

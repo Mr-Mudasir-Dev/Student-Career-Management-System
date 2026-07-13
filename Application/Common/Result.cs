@@ -33,4 +33,22 @@ namespace Application.Common
             return new Result(false, "Registration failed", errors);
         }
     }
+
+
+    public class Result<T> : Result
+    {
+        public T? Data { get; }
+
+        protected Result(bool isSuccess, string? message, T? data, List<string>? errors = null)
+            : base(isSuccess, message, errors)
+        {
+            Data = data;
+        }
+
+        public static Result<T> Success(T data, string? msg = null)
+            => new Result<T>(true, msg, data);
+
+        public static new Result<T> Failure(string msg)
+            => new Result<T>(false, msg, default);
+    }
 }

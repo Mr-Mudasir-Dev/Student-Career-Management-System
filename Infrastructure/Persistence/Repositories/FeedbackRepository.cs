@@ -19,28 +19,28 @@ namespace Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Feedback>> GetByCategoryAync(FeedbackCategory category)
+        public async Task<IEnumerable<Feedback>> GetByCategoryAync(FeedbackCategory category, CancellationToken cancellationToken = default)
         {
             return await _context.Feedbacks
                 .Where(f => f.Category == category)
                 .OrderByDescending(f => f.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Feedback>> GetByStatusAsync(FeedbackStatus status)
+        public async Task<IEnumerable<Feedback>> GetByStatusAsync(FeedbackStatus status, CancellationToken cancellationToken = default)
         {
             return await _context.Feedbacks
                 .Where(f => f.Status == status)
                 .OrderByDescending(f => f.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Feedback>> GetByUseridAsync(string id)
+        public async Task<IEnumerable<Feedback>> GetByUseridAsync(string id, CancellationToken cancellationToken = default)
         {
             return await _context.Feedbacks
                 .Where(f => f.UserId == id)
                 .OrderByDescending(f => f.CreatedAt)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }
