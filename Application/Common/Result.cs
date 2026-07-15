@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common
 {
+    // This class is used to represent the result of an operation, including success/failure status, messages, and errors.
     public class Result
     {
         public bool IsSuccess { get; }

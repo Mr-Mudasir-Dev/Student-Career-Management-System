@@ -1,4 +1,6 @@
 ﻿using Application.Common;
+using Application.Interface.Service;
+using Application.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +26,8 @@ namespace Application
             typeof(IPipelineBehavior<,>),
             typeof(ValidationBehavior<,>)
             );
-
+            // services
+            services.AddScoped<IJwtService, JwtService>();
 
             return services;
         }

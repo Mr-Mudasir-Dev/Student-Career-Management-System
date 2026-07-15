@@ -16,5 +16,7 @@ namespace Application.Interface
         IUserRepository UserRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }
 
+        IFindUserRepository FindUserRepository { get; }
+
     }
 }

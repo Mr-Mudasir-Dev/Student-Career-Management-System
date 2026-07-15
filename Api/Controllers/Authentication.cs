@@ -1,5 +1,6 @@
 ﻿using Application.Common;
-using Application.Features.Authentication.Cammand.Register;
+using Application.Features.Authentication.Command.Login;
+using Application.Features.Authentication.Command.Register;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,17 @@ namespace Api.Controllers
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+                return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
+
+            return Ok(ApiResponse<Object?>.SuccessResponse(null, result.Message));
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
