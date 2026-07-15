@@ -11,6 +11,8 @@ namespace Application.Common
         public bool Succeeded { get; set; }
         public List<string> Errors { get; set; } = new();
 
+
+
         public static IdentityOperationResult Success()
         {
             return new IdentityOperationResult

@@ -15,5 +15,7 @@ namespace Application.Interface
         IIdentityRepository IdentityRepository { get; }
         IUserRepository UserRepository { get; }
 
+        IFindUserRepository FindUserRepository { get; }
+
     }
 }

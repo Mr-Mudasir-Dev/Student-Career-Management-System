@@ -1,5 +1,6 @@
 using Api.Middleware;
 using Application;
+using Application.Common;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JWT"));
+
 var app = builder.Build();
+await app.Services.SeedRoleDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

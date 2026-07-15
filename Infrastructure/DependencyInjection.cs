@@ -1,5 +1,6 @@
 ﻿using Application.Interface;
 using Application.Interface.Repository;
+using CMS.Infrastructure.Data;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Mapping;
@@ -20,6 +21,15 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
+
+        // Seeding ke liye alag method
+        public static async Task SeedRoleDatabaseAsync(this IServiceProvider serviceProvider)
+        {
+            var Scoped = serviceProvider.CreateScope();
+            var roleManager = Scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await RoleSeeder.SeedRolesAsync(roleManager);
+
+        }
         public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -52,6 +62,7 @@ namespace Infrastructure
             // Repository Register
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFindUserRepository , FindUserRepository>();
 
             return services;
         }

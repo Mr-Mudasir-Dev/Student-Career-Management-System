@@ -1,0 +1,16 @@
+﻿using Application.Common;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Features.Authentication.Command.Login
+{
+    public class LoginCommand : IRequest<Result<LoginResponse>>
+    {
+        public string? Identifier { get; set; }
+        public string? Password { get; set; }
+    }
+}
