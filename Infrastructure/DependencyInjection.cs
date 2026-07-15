@@ -52,6 +52,10 @@ namespace Infrastructure
             // Repository Register
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+<<<<<<< Updated upstream
+=======
+            
+>>>>>>> Stashed changes
 
             return services;
         }

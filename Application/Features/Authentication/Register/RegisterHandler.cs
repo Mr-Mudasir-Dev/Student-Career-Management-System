@@ -29,7 +29,6 @@ namespace Application.Features.Authentication.Register
                 PhoneNumber = request.PhoneNumber,
                 Age = request.Age
             };
-
             var result = await _unitOfWork.IdentityRepository.Register(newUser, request.Password);
             if (!result.Succeeded)
                 return Result.Failure(result.Errors);

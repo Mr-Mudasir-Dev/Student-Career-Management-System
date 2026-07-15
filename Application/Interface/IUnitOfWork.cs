@@ -11,9 +11,13 @@ namespace Application.Interface
     {
         Task<int> SaveChangesAsync();
 
-
         IIdentityRepository IdentityRepository { get; }
         IUserRepository UserRepository { get; }
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
     }
 }

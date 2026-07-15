@@ -13,17 +13,30 @@ namespace Infrastructure.Persistence
     {
         public IIdentityRepository IdentityRepository { get; }
         public IUserRepository UserRepository { get; }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         
 
         private readonly AppDbContext _context;
         public UnitOfWork(
             AppDbContext context,
             IIdentityRepository identityRepository,
+<<<<<<< Updated upstream
             IUserRepository userRepository)
+=======
+            IUserRepository userRepository
+            )
+>>>>>>> Stashed changes
         {
             _context = context;
             IdentityRepository = identityRepository;
             UserRepository = userRepository;
+<<<<<<< Updated upstream
+=======
+            
+>>>>>>> Stashed changes
         }
 
         
