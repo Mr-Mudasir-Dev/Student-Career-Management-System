@@ -14,8 +14,6 @@ namespace Infrastructure.Persistence
         public IIdentityRepository IdentityRepository { get; }
         public IUserRepository UserRepository { get; }
         public IFeedbackRepository FeedbackRepository { get; }
-        public IFindUserRepository FindUserRepository { get; }
-
 
 
 
@@ -24,22 +22,18 @@ namespace Infrastructure.Persistence
             AppDbContext context,
             IIdentityRepository identityRepository,
             IUserRepository userRepository,
-            IFeedbackRepository feedbackRepository,
-            IFindUserRepository findUserRepository)
-       
+            IFeedbackRepository feedbackRepository)
         {
             _context = context;
             IdentityRepository = identityRepository;
             UserRepository = userRepository;
             FeedbackRepository = feedbackRepository;
-            FindUserRepository = findUserRepository;
         }
 
-        
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-           return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Api.Controllers
                 return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
 
 
-            return Ok(ApiResponse<LoginResponse>.SuccessResponse(result.Data!, result.Message));
+            return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));
         }
     }
 }

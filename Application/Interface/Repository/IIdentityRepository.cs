@@ -11,7 +11,7 @@ namespace Application.Interface.Repository
 {
     public interface IIdentityRepository
     {
-        Task<IdentityOperationResult> Register(User user,  string password);
+        Task<IdentityOperationResult> Register(User user, string password);
         Task<LoginOpretionResult<User>> Login(string identifier, string password);
         Task<IList<string>> GetRoles(string id);
     }

@@ -66,7 +66,7 @@ namespace Infrastructure.Persistence.Repositories
             if (result.Succeeded)
 
             {
-              await  _userManager.AddToRoleAsync(appUser, "User");
+                await _userManager.AddToRoleAsync(appUser, "User");
                 return IdentityOperationResult.Success();
             }
 

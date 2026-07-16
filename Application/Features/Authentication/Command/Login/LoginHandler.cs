@@ -17,7 +17,7 @@ namespace Application.Features.Authentication.Command.Login
         private readonly IJwtService _jwtService;
         private readonly ILogger<LoginHandler> _logger;
 
-        public LoginHandler(IUnitOfWork unitOfWork, IJwtService jwtService,ILogger<LoginHandler> logger)
+        public LoginHandler(IUnitOfWork unitOfWork, IJwtService jwtService, ILogger<LoginHandler> logger)
         {
             _unitOfWork = unitOfWork;
             _jwtService = jwtService;
