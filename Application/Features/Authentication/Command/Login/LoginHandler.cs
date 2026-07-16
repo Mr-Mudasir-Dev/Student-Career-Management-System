@@ -13,12 +13,12 @@ namespace Application.Features.Authentication.Command.Login
     public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IJwtService jwtService;
+        private readonly IJwtService _jwtService;
 
         public LoginHandler(IUnitOfWork unitOfWork, IJwtService jwtService)
         {
             _unitOfWork = unitOfWork;
-            this.jwtService = jwtService;
+            _jwtService = jwtService;
         }
         public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
@@ -34,7 +34,7 @@ namespace Application.Features.Authentication.Command.Login
 
             var roles = await _unitOfWork.IdentityRepository.GetRoles(user.Id!);
 
-            var token = jwtService.GenerateToken(user.Id!, user.UserName!, user.Email!, roles.FirstOrDefault()!);
+            var token = _jwtService.GenerateToken(user.Id!, user.UserName!, user.Email!, roles.FirstOrDefault()!);
 
             return Result<LoginResponse>.Success(new LoginResponse
             {
@@ -45,8 +45,6 @@ namespace Application.Features.Authentication.Command.Login
                 Age = user.Age
             }, "Login successful");
 
-
-            throw new NotImplementedException();
         }
     }
 }
