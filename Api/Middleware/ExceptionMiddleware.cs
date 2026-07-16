@@ -60,10 +60,12 @@ namespace Api.Middleware
             }
             catch (Exception ex)
             {
-                // Unexpected crash — production mein details mat dikhaao!
+                //Unexpected crash — production mein details mat dikhaao!
                 _logger.LogError(ex, "Unexpected error occurred.");
                 await WriteResponseAsync(context, 500,
                     ApiResponse<object>.ServerErrorResponse());
+                _logger.LogError(ex, ex.ToString());
+
             }
         }
 

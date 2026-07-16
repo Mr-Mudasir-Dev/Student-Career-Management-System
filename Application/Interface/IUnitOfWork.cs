@@ -11,7 +11,6 @@ namespace Application.Interface
     {
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
-
         IIdentityRepository IdentityRepository { get; }
         IUserRepository UserRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }

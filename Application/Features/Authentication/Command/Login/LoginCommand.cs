@@ -10,7 +10,7 @@ namespace Application.Features.Authentication.Command.Login
 {
     public class LoginCommand : IRequest<Result<LoginResponse>>
     {
-        public string? Identifier { get; set; }
-        public string? Password { get; set; }
+        public string Identifier { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

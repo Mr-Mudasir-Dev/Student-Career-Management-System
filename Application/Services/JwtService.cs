@@ -25,7 +25,7 @@ namespace Application.Services
             _jwt = jwt.Value;
         }
 
-        public string GenerateToken(string userId, string userName, string email, string Role)
+        public string GenerateToken(string userId, string userName, string Role)
         {
             try
             {
@@ -35,7 +35,6 @@ namespace Application.Services
                 {
                     new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim(ClaimTypes.Name, userName),
-                    new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, Role),
 
                 };
