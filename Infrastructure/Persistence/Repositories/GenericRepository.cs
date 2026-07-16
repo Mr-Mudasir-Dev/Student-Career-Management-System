@@ -20,9 +20,9 @@ namespace Infrastructure.Persistence.Repositories
         }
 
 
-        public async Task AddAsync(T entity)
+        public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            await _dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity, cancellationToken);
         }
 
         public void DeleteAsync(T entity)
@@ -30,19 +30,19 @@ namespace Infrastructure.Persistence.Repositories
             _dbSet.Remove(entity);
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.FindAsync(id) != null;
+            return await _dbSet.FindAsync(id, cancellationToken) != null;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.ToListAsync(cancellationToken);
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id, cancellationToken);
         }
 
         public void UpdateAsync(T entity)

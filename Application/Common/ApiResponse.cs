@@ -14,7 +14,7 @@ namespace Application.Common
         public List<string> Errors { get; set; } = new();
 
         //200 - Success with data
-        public static ApiResponse<T> SuccessResponse(T data, string? message = "Success")
+        public static ApiResponse<T> SuccessResponse(T? data, string? message = "Success")
         {
             return new ApiResponse<T>
             {
@@ -38,12 +38,12 @@ namespace Application.Common
         }
 
         // 400 - Bad Request / General Fail
-        public static ApiResponse<T> FailResponse(string message = "Something went wrong")
+        public static ApiResponse<T> FailResponse(string? message = "Something went wrong")
         {
             return new ApiResponse<T>
             {
                 Success = false,
-                Message = message,
+                Message = message ?? "Something went wrong",
                 Data = default,
                 Errors = new List<string>()
             };

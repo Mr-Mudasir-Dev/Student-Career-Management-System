@@ -8,6 +8,6 @@ namespace Application.Interface.Service
 {
     public interface IJwtService
     {
-        string GenerateToken(string userId, string userName, string email, string role);
+        string GenerateToken(string userId, string userName, string role);
     }
 }

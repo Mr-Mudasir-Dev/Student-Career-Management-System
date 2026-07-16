@@ -34,26 +34,22 @@ namespace Application.Common
             return new Result(false, "Registration failed", errors);
         }
     }
-    // This class is a generic version of the Result class, allowing for the inclusion of data in the result.
+
+
     public class Result<T> : Result
     {
         public T? Data { get; }
-        protected Result(bool issuccess, string? message, T? data = default, List<string>? errors = null)
-            : base(issuccess, message, errors)
+
+        protected Result(bool isSuccess, string? message, T? data, List<string>? errors = null)
+            : base(isSuccess, message, errors)
         {
             Data = data;
         }
+
         public static Result<T> Success(T data, string? msg = null)
-        {
-            return new Result<T>(true, msg, data);
-        }
+            => new Result<T>(true, msg, data);
+
         public static new Result<T> Failure(string msg)
-        {
-            return new Result<T>(false, msg);
-        }
-        public static new Result<T> Failure(List<string> errors)
-        {
-            return new Result<T>(false, "Operation failed", default, errors);
-        }
+            => new Result<T>(false, msg, default);
     }
 }

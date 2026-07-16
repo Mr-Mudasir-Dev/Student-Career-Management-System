@@ -2,6 +2,7 @@
 using Application.Interface;
 using Application.Interface.Service;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,40 +14,40 @@ namespace Application.Features.Authentication.Command.Login
     public class LoginHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IJwtService jwtService;
+        private readonly IJwtService _jwtService;
+        private readonly ILogger<LoginHandler> _logger;
 
-        public LoginHandler(IUnitOfWork unitOfWork, IJwtService jwtService)
+        public LoginHandler(IUnitOfWork unitOfWork, IJwtService jwtService, ILogger<LoginHandler> logger)
         {
             _unitOfWork = unitOfWork;
-            this.jwtService = jwtService;
+            _jwtService = jwtService;
+            _logger = logger;
         }
         public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.FindUserRepository.FindByEmailOrUsernameAsync(request.Identifier!);
-            if (user == null)
-                return Result<LoginResponse>.Failure("Invalid credentials");
+            _logger.LogInformation("LoginHandler called with Identifier: {Identifier}", request.Identifier);
 
-
-            var loginUser = await _unitOfWork.IdentityRepository.Login(user, request.Password!);
+            var loginUser = await _unitOfWork.IdentityRepository.Login(request.Identifier, request.Password);
 
             if (!loginUser.Succeeded)
-                return Result<LoginResponse>.Failure("Something went wrong during login.");
+                return Result<LoginResponse>.Failure(loginUser.Error);
 
-            var roles = await _unitOfWork.IdentityRepository.GetRoles(user.Id!);
+            var roles = await _unitOfWork.IdentityRepository.GetRoles(loginUser.User!.Id!);
 
-            var token = jwtService.GenerateToken(user.Id!, user.UserName!, user.Email!, roles.FirstOrDefault()!);
+
+            _logger.LogInformation($"User {loginUser.User!.UserName} UserId : {loginUser.User!.Id!} logged in successfully with roles: {string.Join(", ", roles)}");
+
+            var token = _jwtService.GenerateToken(loginUser.User!.Id!, loginUser.User!.UserName!, roles.FirstOrDefault()!);
 
             return Result<LoginResponse>.Success(new LoginResponse
             {
                 Token = token,
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Age = user.Age
+                UserName = loginUser.User!.UserName!,
+                Email = loginUser.User!.Email!,
+                PhoneNumber = loginUser.User!.PhoneNumber!,
+                Age = loginUser.User!.Age!
             }, "Login successful");
 
-
-            throw new NotImplementedException();
         }
     }
 }

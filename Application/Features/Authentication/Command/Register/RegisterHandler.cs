@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Application.Features.Authentication.Command.Register
 {
     public class RegisterHandler : IRequestHandler<RegisterCommand, Result>
@@ -29,7 +30,6 @@ namespace Application.Features.Authentication.Command.Register
                 PhoneNumber = request.PhoneNumber,
                 Age = request.Age
             };
-
             var result = await _unitOfWork.IdentityRepository.Register(newUser, request.Password);
             if (!result.Succeeded)
                 return Result.Failure(result.Errors);

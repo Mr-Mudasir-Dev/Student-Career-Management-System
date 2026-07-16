@@ -1,4 +1,5 @@
-﻿using Infrastructure.Identity;
+﻿using Domain.Entities;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +16,18 @@ namespace Infrastructure.Data
         {
         }
 
-       
+        public DbSet<Feedback> Feedbacks { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly
+                (typeof(AppDbContext).Assembly);
+        }
+
+
     }
 }
