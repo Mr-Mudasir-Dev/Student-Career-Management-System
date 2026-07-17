@@ -17,14 +17,13 @@ namespace Infrastructure.Persistence.Repositories
     public class IdentityRepository : IIdentityRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly ILogger<IdentityRepository> _logger;
 
-        public IdentityRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IMapper mapper, ILogger<IdentityRepository> logger)
+        public IdentityRepository(UserManager<ApplicationUser> userManager,
+            IMapper mapper, ILogger<IdentityRepository> logger)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _mapper = mapper;
             _logger = logger;
         }

@@ -9,8 +9,10 @@ using Application.Features.Feedback.Queries.GetFeedbacksByStatus;
 using Application.Features.Feedback.Queries.GetMyFeedbacks;
 using Domain.Enums.Feedback;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers
 {
@@ -25,9 +27,17 @@ namespace Api.Controllers
         }
 
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Submit([FromBody] SubmitFeedbackCommand cmd)
         {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(UserId))
+                return Unauthorized(ApiResponse<object>.UnauthorizedResponse());
+
+            cmd.UserId = UserId;
+
             var result = await _mediator.Send(cmd);
             if (!result.IsSuccess)
                 return BadRequest(ApiResponse<object>.FailResponse(result.Message ?? "Something went wrong"));
@@ -36,12 +46,19 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, DeleteFeedbackCommand cmd)
+        public async Task<IActionResult> Delete(int id)
         {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(UserId))
+                return Unauthorized(ApiResponse<object>.UnauthorizedResponse());
+
             var command = new DeleteFeedbackCommand
             {
-                Id = id
+                Id = id,
+                UserId = UserId,
             };
+
             var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)
@@ -52,23 +69,30 @@ namespace Api.Controllers
 
         }
 
-        [HttpGet("my/{userid}")]
-        public async Task<IActionResult> GetMyFeedback(string userid)
+        
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyFeedback()
         {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(UserId))
+                return Unauthorized(ApiResponse<object>.UnauthorizedResponse());
+
             var query = new GetMyFeedbacksQuery
             {
-                UserId = userid
+                UserId = UserId
             };
 
-            var result = await _mediator .Send(query);
+            var result = await _mediator.Send(query);
 
 
             if (!result.IsSuccess)
                 return BadRequest(ApiResponse<object>.FailResponse(result.Message));
 
-            return Ok(ApiResponse<object>.SuccessResponse(result.Data,result.Message));
+            return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllFeedback()
         {
@@ -88,7 +112,7 @@ namespace Api.Controllers
                 Status = status
             };
 
-            var result = await _mediator .Send(query);
+            var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
                 return BadRequest
@@ -123,8 +147,8 @@ namespace Api.Controllers
                 Id = id
             });
 
-            if(!resulte.IsSuccess)
-                return BadRequest (ApiResponse<object>.FailResponse(resulte.Message));
+            if (!resulte.IsSuccess)
+                return BadRequest(ApiResponse<object>.FailResponse(resulte.Message));
 
             return Ok(ApiResponse<object>
                 .SuccessResponse(resulte.Data, resulte.Message));
@@ -140,7 +164,7 @@ namespace Api.Controllers
                 return BadRequest
                     (ApiResponse<object>.FailResponse(result.Message));
 
-            return Ok(ApiResponse<object>.SuccessResponse(null ,result.Message));
+            return Ok(ApiResponse<object>.SuccessResponse(null, result.Message));
         }
     }
 }
