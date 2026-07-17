@@ -41,17 +41,18 @@ namespace Infrastructure
                 opt.UseSqlServer(configuration.GetConnectionString("DbConnection"));
             });
 
-            // Identiy
-            services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+            // AddIdentity ki jagah AddIdentityCore use karo!
+            services.AddIdentityCore<ApplicationUser>(option =>
             {
                 option.User.RequireUniqueEmail = true;
                 option.Password.RequiredLength = 6;
                 option.Password.RequireUppercase = true;
-                option.Password.GetHashCode();
-
             })
-             .AddEntityFrameworkStores<AppDbContext>()
+            .AddRoles<IdentityRole>()              // ← Roles ke liye
+            .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
+            
 
             // Auto Mapper 
             services.AddAutoMapper(cfg => { }, typeof(IdentityProfile).Assembly);

@@ -26,6 +26,7 @@ namespace Application
             typeof(IPipelineBehavior<,>),
             typeof(ValidationBehavior<,>)
             );
+
             // services
             services.AddScoped<IJwtService, JwtService>();
 

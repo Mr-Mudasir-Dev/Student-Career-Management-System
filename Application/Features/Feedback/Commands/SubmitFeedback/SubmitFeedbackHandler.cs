@@ -29,8 +29,16 @@ namespace Application.Features.Feedback.Commands.SubmitFeedback
                 IsAnonymous = request.IsAnonymous,
             };
 
-            await _uow.FeedbackRepository.AddAsync(feedback, cancellationToken);
-            await _uow.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _uow.FeedbackRepository.AddAsync(feedback, cancellationToken);
+                await _uow.SaveChangesAsync(cancellationToken);
+            }
+            catch
+            {
+                return Result.Failure("User Unothorize!");
+            }
+            
 
             return Result.Success("Feedback Submitted Successfully");
         }
