@@ -9,11 +9,14 @@ namespace Application.Interface
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-
+        IBookRepository BookRepository { get; }
+        IAuthorRepository AuthorRepository { get; }
+        IGenreRepository GenreRepository { get; }
         IIdentityRepository IdentityRepository { get; }
         IUserRepository UserRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     }
 }

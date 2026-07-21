@@ -61,6 +61,9 @@ namespace Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Repository Register
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
