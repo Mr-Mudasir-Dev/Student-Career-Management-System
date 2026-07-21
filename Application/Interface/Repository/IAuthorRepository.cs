@@ -10,5 +10,6 @@ namespace Application.Interface.Repository
     public interface IAuthorRepository : IGenericRepository<Author>
     {
         Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Author>> SearchByNameAsync(string name, CancellationToken cancellationToken = default);
     }
 }

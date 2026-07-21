@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Author.Queries.GetAuthorById
 {
-    public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, Result<AuthorByAdminDto>>
+    public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, Result<AuthorDto>>
     {
         private readonly IUnitOfWork _uow;
         public GetAuthorByIdHandler(IUnitOfWork unitOfWork)
@@ -19,14 +19,14 @@ namespace Application.Features.Author.Queries.GetAuthorById
             _uow = unitOfWork;
         }
 
-        public async Task<Result<AuthorByAdminDto>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<AuthorDto>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
         {
             var author = await _uow.AuthorRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if(author == null)
                 throw new NotFoundException("author", request.Id);
 
-            var dto = new AuthorByAdminDto
+            var dto = new AuthorDto
             {
                 Id = author.Id,
                 Name = author.Name,
@@ -34,7 +34,7 @@ namespace Application.Features.Author.Queries.GetAuthorById
                 CreatedAt = author.CreatedAt
             };
 
-            return Result<AuthorByAdminDto>.Success(dto, "Author fetched successfully!");
+            return Result<AuthorDto>.Success(dto, "Author fetched successfully!");
         }
     }
 }

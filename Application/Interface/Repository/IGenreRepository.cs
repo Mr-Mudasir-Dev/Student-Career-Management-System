@@ -10,5 +10,6 @@ namespace Application.Interface.Repository
     public interface IGenreRepository : IGenericRepository<Genre>
     {
         Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Genre>> SearchByNameAsync (string search, CancellationToken cancellationToken = default);
     }
 }

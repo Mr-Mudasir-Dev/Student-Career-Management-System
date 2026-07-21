@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Author.Queries.GetAuthorById
+namespace Application.Features.Author.Queries.SearchAuthors
 {
-    public class GetAuthorByIdQuery : IRequest<Result<AuthorDto>>
+    public class SearchAuthorsQuery : IRequest<Result<List<AuthorDto>>>
     {
-        public int Id { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
     }
 }

@@ -13,7 +13,8 @@ namespace Application.Features.Author.Commands.AddAuthor
         {
             RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Author name is required.")
-            .MaximumLength(128).WithMessage("Name maximum 128 characters.");
+            .MaximumLength(128).WithMessage("Name maximum 128 characters.")
+            .Matches(@"^[A-Za-z\s]+$").WithMessage("Author name can only contain letters and spaces.");
 
             RuleFor(x => x.Bio)
             .MaximumLength(1000).WithMessage("Bio maximum 1000 characters.")

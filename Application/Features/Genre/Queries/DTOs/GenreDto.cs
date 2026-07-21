@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Author.Queries.DTOs
+namespace Application.Features.Genre.Queries.DTOs
 {
-    public class AuthorByAdminDto
+    public class GenreDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string? Bio { get; set; }
+        public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

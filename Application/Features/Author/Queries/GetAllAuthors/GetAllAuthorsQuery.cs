@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Author.Queries.GetAllAuthors
 {
-    public class GetAllAuthorsQuery : IRequest<Result<List<AuthorByUserDto>>>
+    public class GetAllAuthorsQuery : IRequest<Result<List<AuthorDto>>>
     {
     }
 }

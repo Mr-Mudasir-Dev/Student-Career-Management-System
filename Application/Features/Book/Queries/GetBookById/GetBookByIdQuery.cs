@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.Features.Author.Queries.DTOs;
+using Application.Features.Book.Queries.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Author.Queries.GetAuthorById
+namespace Application.Features.Book.Queries.GetBookById
 {
-    public class GetAuthorByIdQuery : IRequest<Result<AuthorDto>>
+    public class GetBookByIdQuery : IRequest<Result<BookDto>>
     {
         public int Id { get; set; }
     }

@@ -23,5 +23,13 @@ namespace Infrastructure.Persistence.Repositories
             return await _context.Genres
                 .AnyAsync(g => g.Name.ToLower() == name.ToLower(), cancellationToken);
         }
+
+        public async Task<IEnumerable<Genre>> SearchByNameAsync(string search, CancellationToken cancellationToken = default)
+        {
+            return await _context.Genres
+                .Where(g => g.Name.Contains(search))
+                .OrderBy(g => g.Name)
+                .ToListAsync();
+        }
     }
 }

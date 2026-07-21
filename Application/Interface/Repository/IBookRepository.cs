@@ -13,5 +13,9 @@ namespace Application.Interface.Repository
         Task<IEnumerable<Book>> GetByGenreIdAsync(int genreId, CancellationToken cancellationToken = default);
         Task<IEnumerable<Book>> GetBestsellersAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<Book>> GetNewArrivalsAsync(CancellationToken cancellationToken = default);
+        Task<bool> ExistsByTitleAsync(string title, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Book>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default);
+        Task<Book?> GetByIdWithDetailsAsync(int id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Book>> GetSearchByTitleAsync(string serachTerm, CancellationToken cancellationToken= default);
     }
 }

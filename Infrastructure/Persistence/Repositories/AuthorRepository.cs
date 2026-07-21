@@ -24,5 +24,13 @@ namespace Infrastructure.Persistence.Repositories
                 .AnyAsync(a => a.Name.ToLower() == name.ToLower(), cancellationToken);
 
         }
+
+        public async Task<IEnumerable<Author>> SearchByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            return await _context.Authors
+                .Where(a => a.Name.Contains(name))
+                .OrderBy(a => a.Name)
+                .ToListAsync(cancellationToken);
+        }
     }
 }
