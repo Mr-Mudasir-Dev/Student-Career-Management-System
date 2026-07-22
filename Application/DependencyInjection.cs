@@ -1,11 +1,8 @@
 ﻿using Application.Common;
-using Application.Interface.Service;
-using Application.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,8 +24,7 @@ namespace Application
             typeof(ValidationBehavior<,>)
             );
 
-            // services
-            services.AddScoped<IJwtService, JwtService>();
+            
 
             return services;
         }
