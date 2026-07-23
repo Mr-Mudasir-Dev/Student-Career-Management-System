@@ -15,7 +15,7 @@ namespace Infrastructure.Data
             var admin = new ApplicationUser
             {
                 UserName = "admin",
-                Email = "Ahmed@gmail.com",
+                Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "0316200103",
                 PhoneNumberConfirmed = true,

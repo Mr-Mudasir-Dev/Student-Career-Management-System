@@ -35,10 +35,9 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginCommand command)
         {
-            _logger.LogInformation("Login attempt for user: {Identifier}", command.Identifier);
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
-                return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
+                return BadRequest(ApiResponse<object>.NotFoundResponse("Invalid credentials"));
 
 
             return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));

@@ -30,10 +30,8 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<IList<string>> GetRoles(string id)
         {
-            _logger.LogInformation("Fetching roles for user with ID: {UserId}", id);
             var appUser = await _userManager.FindByIdAsync(id);
             var roles = await _userManager.GetRolesAsync(appUser!);
-            _logger.LogInformation($"user Role Count: {roles.Count}");
             return roles;
         }
 

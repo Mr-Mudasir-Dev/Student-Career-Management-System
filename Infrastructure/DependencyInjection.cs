@@ -42,7 +42,7 @@ namespace Infrastructure
             var Scoped = serviceProvider.CreateScope();
             var userManager = Scoped.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = Scoped.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            await AdminSeeder.SeederAdminAsync(userManager,roleManager);
+            await AdminSeeder.SeederAdminAsync(userManager, roleManager);
         }
         public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,

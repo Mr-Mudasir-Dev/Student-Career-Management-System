@@ -25,19 +25,18 @@ namespace Application.Features.Authentication.Command.Login
         }
         public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("LoginHandler called with Identifier: {Identifier}", request.Identifier);
 
             var loginUser = await _unitOfWork.IdentityRepository.Login(request.Identifier, request.Password);
 
             if (!loginUser.Succeeded)
-                return Result<LoginResponse>.Failure(loginUser.Error);
+                return Result<LoginResponse>.Failure("Invalid credentials");
 
             var roles = await _unitOfWork.IdentityRepository.GetRoles(loginUser.User!.Id!);
 
 
             _logger.LogInformation($"User {loginUser.User!.UserName} UserId : {loginUser.User!.Id!} logged in successfully with roles: {string.Join(", ", roles)}");
 
-            var token = _jwtService.GenerateToken(loginUser.User!.Id!, loginUser.User!.UserName!, roles.FirstOrDefault()!);
+            var token = _jwtService.GenerateToken(loginUser.User.Id!, loginUser.User!.UserName!, roles.FirstOrDefault()!);
 
             return Result<LoginResponse>.Success(new LoginResponse
             {
