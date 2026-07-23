@@ -31,11 +31,8 @@ namespace Application
             // EmailConfig to map the EmailConfig section in Config
             services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
 
-            // services
-            services.AddScoped<IJwtService, JwtService>();
             
-
-            
+  
 
             return services;
         }
