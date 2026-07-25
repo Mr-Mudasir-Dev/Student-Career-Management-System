@@ -76,6 +76,7 @@ namespace Infrastructure
 
             // services
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             // UOW Register
             services.AddScoped<IUnitOfWork, UnitOfWork>();

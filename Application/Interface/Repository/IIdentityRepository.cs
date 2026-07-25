@@ -14,5 +14,7 @@ namespace Application.Interface.Repository
         Task<IdentityOperationResult> Register(User user, string password);
         Task<LoginOpretionResult<User>> Login(string identifier, string password);
         Task<IList<string>> GetRoles(string id);
+        
+        Task<IdentityOperationResult> VerifyEmail(string token, string email);
     }
 }

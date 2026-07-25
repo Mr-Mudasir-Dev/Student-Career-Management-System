@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Application.Features.Authentication.Command.Login;
 using Application.Features.Authentication.Command.Register;
+using Application.Features.Authentication.Command.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,20 @@ namespace Api.Controllers
 
 
             return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));
+        }
+        [HttpGet("verify-email")]
+
+        public async Task<IActionResult> VerifyEmail([FromQuery] string token, [FromQuery] string email)
+        {
+            var command = new VerifyEmailCommand
+            {
+                Token = token,
+                Email = email
+            };
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+                return BadRequest(ApiResponse<object>.NotFoundResponse(result.Message!));
+            return Ok(ApiResponse<object>.SuccessResponse(null, result.Message));
         }
     }
 }

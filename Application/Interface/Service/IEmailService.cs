@@ -8,7 +8,7 @@ namespace Application.Interface.Service
 {
     public interface IEmailService
     {
-        Task SendVerificationEmailAsync(string email, string verificationLink);
+        Task<bool> SendVerificationEmailAsync(string email, string verificationLink);
 
     }
 }
