@@ -29,7 +29,7 @@ namespace Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Submit([FromBody] SubmitFeedbackCommand cmd)
+        public async Task<IActionResult> Submit(SubmitFeedbackCommand cmd)
         {
             var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

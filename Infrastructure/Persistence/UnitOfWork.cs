@@ -12,6 +12,8 @@ namespace Infrastructure.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {
+        public IReviewRepository ReviewRepository { get;}
+        public IOrderRepository OrderRepository { get; }
         public IBookRepository BookRepository { get; }
         public IAuthorRepository AuthorRepository { get; }
         public IGenreRepository GenreRepository { get; }
@@ -24,6 +26,8 @@ namespace Infrastructure.Persistence
         private readonly AppDbContext _context;
         public UnitOfWork(
             AppDbContext context,
+            IReviewRepository reviewRepository,
+            IOrderRepository orderRepository,
             IBookRepository bookRepository,
             IAuthorRepository authorRepository,
             IGenreRepository genreRepository,
@@ -32,6 +36,8 @@ namespace Infrastructure.Persistence
             IFeedbackRepository feedbackRepository)
         {
             _context = context;
+            ReviewRepository = reviewRepository;
+            OrderRepository = orderRepository;
             BookRepository = bookRepository;
             AuthorRepository = authorRepository;
             GenreRepository = genreRepository;

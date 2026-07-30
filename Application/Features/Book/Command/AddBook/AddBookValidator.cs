@@ -31,11 +31,15 @@ namespace Application.Features.Book.Command.AddBook
 
             RuleFor(x => x.AuthorIds)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("At least one author is required.");
+                .NotEmpty().WithMessage("At least one author is required.")
+                .Must(ids => ids.Distinct().Count() == ids.Count)
+                .WithMessage("Duplicate author IDs are not allowed.");
 
             RuleFor(x => x.GenreIds)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("At least one genre is required.");
+                .NotEmpty().WithMessage("At least one genre is required.")
+                .Must(ids => ids.Distinct().Count() == ids.Count)
+                .WithMessage("Duplicate genre IDs are not allowed.");
 
             RuleFor(x => x.Description)
                 .Cascade(CascadeMode.Stop)

@@ -9,6 +9,8 @@ namespace Application.Interface
 {
     public interface IUnitOfWork
     {
+        IReviewRepository ReviewRepository { get; }
+        IOrderRepository OrderRepository { get; }
         IBookRepository BookRepository { get; }
         IAuthorRepository AuthorRepository { get; }
         IGenreRepository GenreRepository { get; }
