@@ -43,6 +43,11 @@ namespace Infrastructure.Persistence.Repositories
             return update.Succeeded;
         }
 
+        public async Task<bool> ExistsByUserIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId) != null;
+        }
+
         public async Task<User?> GetByEmail(string Email)
         {
             ApplicationUser? exestingUser = 
