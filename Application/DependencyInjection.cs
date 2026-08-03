@@ -1,11 +1,9 @@
 ﻿using Application.Common;
-using Application.Interface.Service;
-using Application.Services;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +13,7 @@ namespace Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
@@ -27,8 +25,14 @@ namespace Application
             typeof(ValidationBehavior<,>)
             );
 
-            // services
-            services.AddScoped<IJwtService, JwtService>();
+            // JWTConfiguration to map the JWT section in config
+            services.Configure<JwtConfig>(configuration.GetSection("JWT"));
+
+            // EmailConfig to map the EmailConfig section in Config
+            services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
+
+            
+  
 
             return services;
         }

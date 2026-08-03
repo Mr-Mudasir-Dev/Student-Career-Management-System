@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Application.Features.Authentication.Command.Login;
 using Application.Features.Authentication.Command.Register;
+using Application.Features.Authentication.Command.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,13 +36,26 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginCommand command)
         {
-            _logger.LogInformation("Login attempt for user: {Identifier}", command.Identifier);
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
-                return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
+                return BadRequest(ApiResponse<object>.NotFoundResponse("Invalid credentials"));
 
 
             return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));
+        }
+        [HttpGet("verify-email")]
+
+        public async Task<IActionResult> VerifyEmail([FromQuery] string token, [FromQuery] string email)
+        {
+            var command = new VerifyEmailCommand
+            {
+                Token = token,
+                Email = email
+            };
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+                return BadRequest(ApiResponse<object>.NotFoundResponse(result.Message!));
+            return Ok(ApiResponse<object>.SuccessResponse(null, result.Message));
         }
     }
 }

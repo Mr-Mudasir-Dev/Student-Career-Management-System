@@ -86,12 +86,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JWT"));
+
 
 var app = builder.Build();
+// Seed the database with roles and admin user
 await app.Services.SeedRoleDatabaseAsync();
+
+await app.Services.SeedAdminDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
