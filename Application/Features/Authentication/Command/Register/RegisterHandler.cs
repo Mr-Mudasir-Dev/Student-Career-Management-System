@@ -34,7 +34,7 @@ namespace Application.Features.Authentication.Command.Register
             if (!result.Succeeded)
                 return Result.Failure(result.Errors);
 
-            return Result.Success("User registered successfully");
+            return Result.Success("Registration successful. A verification link has been sent to your email address. Please verify your email to activate your account.");
         }
     }
 
