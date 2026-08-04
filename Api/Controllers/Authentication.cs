@@ -15,12 +15,13 @@ namespace Api.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<Authentication> _logger;
 
-        public Authentication(IMediator mediator,ILogger<Authentication> logger)
+        public Authentication(IMediator mediator, ILogger<Authentication> logger)
         {
             _mediator = mediator;
             _logger = logger;
         }
 
+        //Register EndPoint
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterCommand command)
@@ -28,25 +29,29 @@ namespace Api.Controllers
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
                 return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
-
             return Ok(ApiResponse<Object?>.SuccessResponse(null, result.Message));
         }
 
 
+        //Login EndPoint
+
+
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
-                return BadRequest(ApiResponse<object>.NotFoundResponse("Invalid credentials"));
-
-
+                return BadRequest(ApiResponse<object>.NotFoundResponse(result.Message!));
             return Ok(ApiResponse<object>.SuccessResponse(result.Data, result.Message));
         }
-        [HttpGet("verify-email")]
 
+        //VerifyEmail EndPoint
+
+        [HttpGet("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string token, [FromQuery] string email)
         {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+                return BadRequest(ApiResponse<object>.FailResponse("Something Wen't Wrong"));
             var command = new VerifyEmailCommand
             {
                 Token = token,

@@ -28,7 +28,7 @@ namespace Infrastructure.Persistence.Repositories
         private readonly IEmailService _emailService;
 
         public IdentityRepository(UserManager<ApplicationUser> userManager,
-            IMapper mapper, ILogger<IdentityRepository> logger,IConfiguration configuration,IEmailService emailService)
+            IMapper mapper, ILogger<IdentityRepository> logger, IConfiguration configuration, IEmailService emailService)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -37,6 +37,8 @@ namespace Infrastructure.Persistence.Repositories
             _emailService = emailService;
         }
 
+
+        //GetRoles Method
         public async Task<IList<string>> GetRoles(string id)
         {
             var appUser = await _userManager.FindByIdAsync(id);
@@ -44,19 +46,25 @@ namespace Infrastructure.Persistence.Repositories
             return roles;
         }
 
+
+        //Login Method
         public async Task<LoginOpretionResult<User>> Login(string identifier, string password)
         {
             var currentUser = await _userManager.FindByEmailAsync(identifier)
                     ?? await _userManager.FindByNameAsync(identifier);
             if (currentUser == null)
-            {
                 return LoginOpretionResult<User>.Failure("Invalid credentials");
-            }
+            if (!currentUser.EmailConfirmed)
+                return LoginOpretionResult<User>.Failure("Please Confirm Your Email");
             var result = await _userManager.CheckPasswordAsync(currentUser, password);
             if (!result) return LoginOpretionResult<User>.Failure("Invalid credentials");
             var appUser = _mapper.Map<User>(currentUser);
             return LoginOpretionResult<User>.Success(appUser);
         }
+
+
+        //Register Method
+
         public async Task<IdentityOperationResult> Register(User user, string password)
         {
             var appUser = new ApplicationUser
@@ -67,29 +75,33 @@ namespace Infrastructure.Persistence.Repositories
                 Age = user.Age,
                 CreatedAt = DateTime.UtcNow
             };
-
+            //Create User In ASPNetUser
             var result = await _userManager.CreateAsync(appUser, password);
+
             if (result.Succeeded)
-
             {
+                //Add Role To User
                 await _userManager.AddToRoleAsync(appUser, "User");
-                // Generate email confirmation token
-                _logger.LogInformation($"Identity Repository :User {appUser.UserName} registered successfully. Sending verification email.");
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-                // Encode the token for URL usage
-                _logger.LogInformation($"Identity Repository :Generated email confirmation token for user {appUser.UserName}: {token}");
-                var encodedToken = HttpUtility.UrlEncode(token);
-                // verify the token by decoding it
-                _logger.LogInformation($"Identity Repository :Encoded email confirmation token for user {appUser.UserName}: {encodedToken}");
-                var baseUrl = _configuration["AppSettings:BaseUrl"];
 
+                _logger.LogInformation($"Identity Repository :User {appUser.UserName} registered successfully. Sending verification email.");
+                // Generate email confirmation token
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                _logger.LogInformation($"Identity Repository :Generated email confirmation token for user {appUser.UserName}: {token}");
+
+                // Encode the token for URL usage
+                var encodedToken = HttpUtility.UrlEncode(token);
+                _logger.LogInformation($"Identity Repository :Encoded email confirmation token for user {appUser.UserName}: {encodedToken}");
+
+                // verify the token by decoding it
+                var baseUrl = _configuration["AppSettings:BaseUrl"];
                 _logger.LogInformation($"Base URL for email verification: {baseUrl}");
-                var confirmationLink = $"{baseUrl}/api/auth/verify-email?token={encodedToken}&email={appUser.Email}";
-                _logger.LogInformation($"Confirmation link for user {appUser.UserName}: {confirmationLink}");
-               var EmailSender =  await _emailService.SendVerificationEmailAsync(appUser.Email!, confirmationLink);
+
+                var confirmationLink = $"{baseUrl}/api/Authentication/verify-email?token={encodedToken}&email={appUser.Email}";
+                _logger.LogInformation($"confirmationLink {confirmationLink}", confirmationLink);
+                var EmailSender = await _emailService.SendVerificationEmailAsync(appUser.Email!, confirmationLink);
                 if (EmailSender)
-                { 
-                _logger.LogInformation($"Identity Repository : Verification email sent to {appUser.Email} for user {appUser.UserName}.");
+                {
+                    _logger.LogInformation($"Identity Repository : Verification email sent to {appUser.Email} for user {appUser.UserName}.");
                     return IdentityOperationResult.Success();
                 }
 
@@ -99,6 +111,10 @@ namespace Infrastructure.Persistence.Repositories
             return IdentityOperationResult.Failure(errors);
         }
 
+
+
+
+        //VerifyEmail Method
         public async Task<IdentityOperationResult> VerifyEmail(string token, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -106,9 +122,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 return IdentityOperationResult.Failure(new List<string> { "User not found" });
             }
-            // Decode the token
-            var decodedToken = HttpUtility.UrlDecode(token);
-            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
                 return IdentityOperationResult.Success();

@@ -29,7 +29,7 @@ namespace Application.Features.Authentication.Command.Login
             var loginUser = await _unitOfWork.IdentityRepository.Login(request.Identifier, request.Password);
 
             if (!loginUser.Succeeded)
-                return Result<LoginResponse>.Failure("Invalid credentials");
+                return Result<LoginResponse>.Failure(loginUser.Error);
 
             var roles = await _unitOfWork.IdentityRepository.GetRoles(loginUser.User!.Id!);
 
