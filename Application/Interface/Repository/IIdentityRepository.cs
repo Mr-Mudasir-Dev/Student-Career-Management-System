@@ -16,5 +16,7 @@ namespace Application.Interface.Repository
         Task<IList<string>> GetRoles(string id);
         
         Task<IdentityOperationResult> VerifyEmail(string token, string email);
+
+        Task<IdentityOperationResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword);
     }
 }

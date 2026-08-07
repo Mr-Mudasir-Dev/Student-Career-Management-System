@@ -31,7 +31,7 @@ namespace Infrastructure.Services
             {
                 var handler = new JwtSecurityTokenHandler();
 
-                var claims = new List<System.Security.Claims.Claim>
+                var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim(ClaimTypes.Name, userName),

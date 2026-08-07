@@ -38,7 +38,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
 
-        //GetRoles Method
+        // GetRoles Method
         public async Task<IList<string>> GetRoles(string id)
         {
             var appUser = await _userManager.FindByIdAsync(id);
@@ -47,7 +47,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
 
-        //Login Method
+        // Login Method
         public async Task<LoginOpretionResult<User>> Login(string identifier, string password)
         {
             var currentUser = await _userManager.FindByEmailAsync(identifier)
@@ -63,7 +63,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
 
-        //Register Method
+        // Register Method
 
         public async Task<IdentityOperationResult> Register(User user, string password)
         {
@@ -75,12 +75,12 @@ namespace Infrastructure.Persistence.Repositories
                 Age = user.Age,
                 CreatedAt = DateTime.UtcNow
             };
-            //Create User In ASPNetUser
+            // Create User In ASPNetUser
             var result = await _userManager.CreateAsync(appUser, password);
 
             if (result.Succeeded)
             {
-                //Add Role To User
+            // Add Role To User
                 await _userManager.AddToRoleAsync(appUser, "User");
 
                 _logger.LogInformation($"Identity Repository :User {appUser.UserName} registered successfully. Sending verification email.");
@@ -114,7 +114,7 @@ namespace Infrastructure.Persistence.Repositories
 
 
 
-        //VerifyEmail Method
+        // VerifyEmail Method
         public async Task<IdentityOperationResult> VerifyEmail(string token, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -127,6 +127,20 @@ namespace Infrastructure.Persistence.Repositories
             {
                 return IdentityOperationResult.Success();
             }
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            return IdentityOperationResult.Failure(errors);
+        }
+
+        // PasswordChangeAsync Method
+        public async Task<IdentityOperationResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword)
+        {
+            var CurrentUser = await _userManager.FindByIdAsync(userId);
+           if(CurrentUser == null)
+                return IdentityOperationResult.Failure(new List<string> { "User not found" });
+           var result = await _userManager.ChangePasswordAsync(CurrentUser, oldPassword, newPassword);
+            if(result.Succeeded)
+                return IdentityOperationResult.Success();
+
             var errors = result.Errors.Select(e => e.Description).ToList();
             return IdentityOperationResult.Failure(errors);
         }

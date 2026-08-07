@@ -1,10 +1,13 @@
 ﻿using Application.Common;
+using Application.Features.Authentication.Command.ChangePassword;
 using Application.Features.Authentication.Command.Login;
 using Application.Features.Authentication.Command.Register;
 using Application.Features.Authentication.Command.VerifyEmail;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Api.Controllers
 {
@@ -60,6 +63,31 @@ namespace Api.Controllers
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
                 return BadRequest(ApiResponse<object>.NotFoundResponse(result.Message!));
+            return Ok(ApiResponse<object>.SuccessResponse(null, result.Message));
+        }
+
+        // ChangePassword EndPoint
+        [Authorize]
+        [HttpPost("change-password")]
+
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _logger.LogInformation("UserId from claims: {UserId}", userId);
+
+
+            if (userId == null)
+                return BadRequest(ApiResponse<object>.FailResponse("signin required"));
+            var command = new ChangePasswordCommand
+            {
+                UserId = userId,
+                OldPassword = changePasswordDTO.OldPassword,
+                NewPassword = changePasswordDTO.Password,
+                ConfirmPassword = changePasswordDTO.ConfirmPassword
+            };
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+                return BadRequest(ApiResponse<object>.ValidationResponse(result.Errors));
             return Ok(ApiResponse<object>.SuccessResponse(null, result.Message));
         }
     }
